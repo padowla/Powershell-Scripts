@@ -1,0 +1,2 @@
+﻿Name;ResourceGroupName;Location;SKU;KAPP;ApplicationName;Environment;PrivateEndpointName;VNetName;VNetResourceGroupName;SubnetName;BypassMSServices;
+keyvault-4141255r1;test-IAM;westeurope;Standard;1111;appname;DEV;pnd1;myVnet;test-IAM;default;no;

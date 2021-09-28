@@ -1,0 +1,3 @@
+﻿EntityType;Entity;PermissionsToKeys;PermissionsToSecrets;PermissionsToCertificates
+User;adam.sandler@alessandrol.onmicrosoft.com;List,get;List,get;get,list
+ServicePrincipal;Terraform-ServicePrincipal;List,get;List,get;get,list
