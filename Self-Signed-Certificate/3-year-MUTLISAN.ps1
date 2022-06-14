@@ -7,10 +7,10 @@ $dns2="dns2.com"
 $dns3="dns3.com"
 #other DNS entry if you want...
 
-$cert = New-SelfSignedCertificate -certstorelocation cert:\localmachine\my -dnsname $subject_name, $dns1, $dns2, $dns3 -notafter $extended_date -KeyLength 4096
+$cert = New-SelfSignedCertificate -certstorelocation "cert:\localmachine\my" -dnsname $subject_name, $dns1, $dns2, $dns3 -notafter $extended_date -KeyLength 4096
 
 $pwd = ConvertTo-SecureString -String $passwordAsString -Force -AsPlainText
-$path = ‘cert:\localMachine\my\’ + $cert.thumbprint
+$path = "cert:\localMachine\my\" + $cert.thumbprint
 
 
 Export-PfxCertificate -cert $path -FilePath .\self-signed-from-powershell.pfx -Password $pwd
