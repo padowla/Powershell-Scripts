@@ -2,7 +2,7 @@
 
 The script makes it possible to analyze the file shares present on a Windows machine (i.e. File Server) in order to obtain recursively for each share the permissions, size and last access of each folder contained.
 
-The File-Share-Analysis.ps1 script creates a shares-to-analyze.csv file containing the shares found automatically and asks the user, before starting, to modify it depending on which shares are to be analyzed. It is possible to define the depth with which the script will explore each share:
+The `File-Share-Analysis.ps1` script creates a `shares-to-analyze.csv` file containing the shares found automatically and asks the user, before starting, to modify it depending on which shares are to be analyzed. It is possible to define the depth with which the script will explore each share:
 
 Example:
 With a tree of folders within the D:\ share like this:
