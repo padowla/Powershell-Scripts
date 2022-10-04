@@ -338,45 +338,58 @@ function Start-Script {
         foreach ($folder in $folders) {
             if ($folder) {
                 Write-Progress -Activity "Exporting report of ACLs for all shares in '$SharesCSVFileName' to '$ReportCSVFileName...'" -Status "$PercentComplete% Complete" -PercentComplete $PercentComplete
-                #Write-Host "DEBUG -------> $folder"
                 $comp = $env:COMPUTERNAME
-                $acls = (Get-Acl -Path $folder | Where-Object { !($_.IsInherited) }).Access
-                [System.Collections.ArrayList]$permissions = @()
-                $permstring = ""
-                foreach ($access in $acls) {
-                    $null = $permissions.Add($access.AccessControlType.ToString() + " " + $access.IdentityReference.ToString() + ":" + $access.FileSystemRights.ToString() + " [" + "Inherited:" + $access.IsInherited.ToString() + "]")
-                    $permstring += $access.AccessControlType.ToString() + " " + $access.IdentityReference.ToString() + ":" + $access.FileSystemRights.ToString() + " [" + "Inherited:" + $access.IsInherited.ToString() + "]||"
-                }
-                $aclDirectory = New-Object PsObject -property @{
-                    'Folder Path'            = $folder
-                    'Shared'                 = Test-IsNetworkShared -Path $folder
-                    'ComputerName'           = $comp
-                    'Permissions'            = $permstring
-                    'Note'                   = ""
-                    'Size'                   = Get-Size -Path $folder -DataFormat KB
-                    'Last Modification Time' = Get-LastWriteTime -Path $folder
-                }
-        
-                $outarray += $aclDirectory
-        
-                #Since the -Append parameter is not available for the Export-Csv command in Powershell 2.0,
-                #use a temporary CSV file and then write its contents in append to the final file
-        
-                $outarray | ConvertTo-Csv -NoTypeInformation | Select-Object -Skip 1 | Set-Content $tempShareFileName #use Skip parameter to avoid to write header (Size, Last Modification Time,etc..) during every flush to final report
-                
-                #.NET Methods lives in it's own world when it comes to current directory...
-                $tempReportFile = Get-Item $tempShareFileName
-                [System.IO.File]::ReadAllText($tempReportFile.FullName) | Out-File $ReportCSVFileName -Append -Encoding Unicode
-                $outarray = @()
+                try {
+                    $aclsDirSec = Get-Acl -Path "$folder" -ErrorAction Stop           
+                    $acls = ( $aclsDirSec | Where-Object { !($_.IsInherited) }).Access
+                    [System.Collections.ArrayList]$permissions = @()
+                    $permstring = ""
+                    foreach ($access in $acls) {
+                        $null = $permissions.Add($access.AccessControlType.ToString() + " " + $access.IdentityReference.ToString() + ":" + $access.FileSystemRights.ToString() + " [" + "Inherited:" + $access.IsInherited.ToString() + "]")
+                        $permstring += $access.AccessControlType.ToString() + " " + $access.IdentityReference.ToString() + ":" + $access.FileSystemRights.ToString() + " [" + "Inherited:" + $access.IsInherited.ToString() + "]||"
+                    }
 
-                #update progress bar
-                $CurrentItem++
-                $PercentComplete = [int](($CurrentItem / $TotalItems) * 100)
-                Start-Sleep -Milliseconds 2500
+                    $aclDirectory = New-Object PsObject -property @{
+                        'Folder Path'            = $folder
+                        'Shared'                 = Test-IsNetworkShared -Path $folder
+                        'ComputerName'           = $comp
+                        'Permissions'            = $permstring
+                        'Note'                   = ""
+                        'Size'                   = Get-Size -Path $folder -DataFormat KB
+                        'Last Modification Time' = Get-LastWriteTime -Path $folder
+                    }
+            
+                    $outarray += $aclDirectory
+            
+                    #Since the -Append parameter is not available for the Export-Csv command in Powershell 2.0,
+                    #use a temporary CSV file and then write its contents in append to the final file
+            
+                    $outarray | ConvertTo-Csv -NoTypeInformation | Select-Object -Skip 1 | Set-Content $tempShareFileName #use Skip parameter to avoid to write header (Size, Last Modification Time,etc..) during every flush to final report
+                    
+                    #.NET Methods lives in it's own world when it comes to current directory...
+                    $tempReportFile = Get-Item $tempShareFileName
+                    [System.IO.File]::ReadAllText($tempReportFile.FullName) | Out-File $ReportCSVFileName -Append -Encoding Unicode
+                    $outarray = @()
+
+                }
+                catch {
+                    Write-Host "Access denied on $folder"    
+                }finally {
+                    #update progress bar
+                    $CurrentItem++
+                    $PercentComplete = [int](($CurrentItem / $TotalItems) * 100)
+                    Start-Sleep -Milliseconds 2500
+                }
             }
 
         }
     }
+
+    #delete temporary files
+    Remove-Item $tempShareFileName
+
+    Write-Host "[+]  Analysis completed on following shares:"
+    $shares
 }
 
 $ReportCSVFileName = 'report.csv'
