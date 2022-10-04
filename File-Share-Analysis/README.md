@@ -1,4 +1,4 @@
-#Analysis of file sharing
+# Analysis of file sharing
 
 The script makes it possible to analyze the file shares present on a Windows machine (i.e., File Server) in order to obtain recursively for each share the permissions, size and last access of each folder contained.
 
