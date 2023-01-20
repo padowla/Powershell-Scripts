@@ -1,8 +1,16 @@
+<#
+   This script extracts all the users contained within
+   the groups listed in the $csvWindowsGroupsNPSPolicies file
+   and of these it selects those with the Reversible Encryption Active Directory flag active.
+   For all CSV files don't touch the header and leave it as in file examples!.
+#>
+
 $countTotalUsersOfGroups = 0
 $csvUsersGroupPolicies = "users-of-groups.csv"
 $csvUsersGroupPoliciesWithRevEnc = "users-of-groups--with-rev-enc.csv"
+$csvWindowsGroupsNPSPolicies = "groups.csv"
 New-Item $csvUsersGroupPolicies -ItemType File -Force
-Import-Csv "C:\Users\adm.samuelep\Desktop\Users-to-Import\groups.csv" | ForEach{ #leave curly bracket here!!
+Import-Csv $csvWindowsGroupsNPSPolicies | ForEach{ #leave curly bracket here!!
    # extract total number of members
    $countTotalUsersOfGroups = $countTotalUsersOfGroups + (Get-ADGroup $_.Name -Properties *).Member.Count
    Write-Output "$($_.Name): $((Get-ADGroup $_.Name -Properties *).Member.Count) members"
