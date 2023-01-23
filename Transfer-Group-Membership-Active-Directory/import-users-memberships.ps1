@@ -3,7 +3,7 @@
 Import-Module activedirectory
 $count = 0
 
-$GroupsFromDomain = Import-csv "C:\Users\Administrator\Downloads\Migrate-Group-Membership-AD\groups-from-domain.csv" -Delimiter ";"
+$GroupsFromDomain = Import-csv "groups-from-domain.csv" -Delimiter ";"
 
 $GroupsFromDomain | Format-Table
 
@@ -11,7 +11,7 @@ foreach ($Group in $GroupsFromDomain) {
     Write-Output "--------------------------------------------------------------------------------------------"
     Write-Output "Membership transfer for the following group: $($Group.Groups)"
     #import previous exported csv from domain of origin
-    $GroupCSV = Import-csv "C:\Users\Administrator\Downloads\Migrate-Group-Membership-AD\$($Group.Groups).csv" -Delimiter ";"
+    $GroupCSV = Import-csv "$($Group.Groups).csv" -Delimiter ";"
     #$GroupCSV | Format-Table
     foreach($User in $GroupCSV){
         $ret = Add-ADGroupMember -Identity $Group.Groups -Members $($User.SamAccountName) -PassThru
