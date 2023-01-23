@@ -1,0 +1,5 @@
+Path;Enabled;GivenName;Name;DisplayName;ObjectClass;SamAccountName;Surname;userAccountControl;UserPrincipalName;UserCannotChangePassword;PasswordNeverExpires;StorePasswordWitRevEnc;AccountExpires;password
+OU=Consulenti,OU=MacAuthentication,OU=NAC,DC=arp,DC=local;TRUE;Mario;Rossi Mario;Rossi Mario;user;5c8cb625e046;Rossi;66176;5c8cb625e046@arp.local;TRUE;TRUE;TRUE;Never;password
+OU=Phone,OU=MacAuthentication,OU=NAC,DC=arp,DC=local;TRUE;;TYL006;TYL006;user;805ec0273a0c;;66176;805ec0273a0c@arp.local;TRUE;TRUE;TRUE;Never;password
+OU=Raspberry,OU=MacAuthentication,OU=NAC,DC=arp,DC=local;TRUE;;RSP014;RSP014;user;b827eb9b221f;;66176;b827eb9b221f@arp.local;TRUE;TRUE;TRUE;Never;password
+OU=Printers,OU=MacAuthentication,OU=NAC,DC=arp,DC=local;TRUE;ST348;ST348;ST348;user;0017c854a42c;;66176;0017c854a42c@arp.local;TRUE;TRUE;TRUE;Never;password
