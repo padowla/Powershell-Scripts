@@ -7,4 +7,4 @@ The ```export-users-from-groups.ps1``` script will create a number of files equa
 The ```import-users-membership.ps1``` script instead, have to be run on destination domain or forest and have to need access to files produced by first script.
 
 For example: <br>
-we want to add some users to group Group1, some others to Group2, the ```export-users-from-groups.ps1``` will create 2 files with name **Group1.csv** and **Group2.csv**
+we want to add some users to group Group1, some others to Group2, the ```export-users-from-groups.ps1``` will create 2 files with name **Group1.csv** and **Group2.csv** that contains SAMAccountName of users member of each group.
