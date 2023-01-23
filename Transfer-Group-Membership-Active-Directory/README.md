@@ -4,5 +4,5 @@ Then run ```import-users-membership.ps1``` to create membership based on file na
 
 The ```export-users-from-groups.ps1``` script will create a number of files equals to the number of groups to import. Also all the files will have the same name of group to import with extension .csv. 
 
-For example:
+For example: <br>
 we want to add some users to group Group1, some others to Group2, the ```export-users-from-groups.ps1``` will create 2 files with name **Group1.csv** and **Group2.csv**
