@@ -14,7 +14,7 @@ Function Test-PortCustom () {
         $Port,
 
         [Parameter(Position=1, Mandatory = $False, HelpMessage="Provide timeout of request", ValueFromPipeline = $true)]
-        $Timeout=100
+        $Timeout=300
 
     ) 
 
